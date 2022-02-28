@@ -29,4 +29,9 @@ export class InsightsController {
   async getTop10Genres() {
     return await this.insightsService.getTop10Genres();
   }
+
+  @Get('/getTracksPopularityInsight')
+  async getTracksPopularityInsight() {
+    return await this.insightsService.getTracksPopularityInsight();
+  }
 }

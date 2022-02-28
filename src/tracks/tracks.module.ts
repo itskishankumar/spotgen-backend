@@ -3,13 +3,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TracksController } from './tracks.controller';
 import { TrackSchema } from './tracks.model';
 import { TracksService } from './tracks.service';
+import * as CONSTANTS from '../../utils/constants';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://kishankumar:Fucktheworld1@ghost0.ymhob.mongodb.net/spotgen?retryWrites=true&w=majority',
-    ),
-    MongooseModule.forFeature([{ name: 'spotify_track', schema: TrackSchema }]),
+    MongooseModule.forFeature([
+      { name: CONSTANTS.SPOTIFY_TRACKS_COLLECTION_NAME, schema: TrackSchema },
+    ]),
   ],
   controllers: [TracksController],
   providers: [TracksService],

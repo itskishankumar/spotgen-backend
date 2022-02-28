@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TrackInterface } from './tracks.model';
 import * as CONSTANTS from '../../utils/constants';
+import { normalizeArray } from '../../utils/helper';
 
 @Injectable()
 export class TracksService {
@@ -98,6 +99,94 @@ export class TracksService {
         $unset: ['_id', 'duration_ms'],
       },
     ]);
+    return data;
+  }
+
+  async getMostPopularTrackData() {
+    const data = await this.trackModel.aggregate(
+      [
+        {
+          $sort: {
+            popularity: -1,
+          },
+        },
+        {
+          $lookup: {
+            from: 'spotify_albums',
+            localField: 'album_id',
+            foreignField: 'id',
+            as: 'release_date',
+          },
+        },
+        {
+          $set: {
+            release_date: {
+              $substr: [
+                {
+                  $arrayElemAt: ['$release_date.release_date', 0],
+                },
+                0,
+                4,
+              ],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$release_date',
+            energy: {
+              $first: '$energy',
+            },
+            acousticness: {
+              $first: '$acousticness',
+            },
+            danceability: {
+              $first: '$danceability',
+            },
+            instrumentalness: {
+              $first: '$instrumentalness',
+            },
+            liveness: {
+              $first: '$liveness',
+            },
+            speechiness: {
+              $first: '$speechiness',
+            },
+            valence: {
+              $first: '$valence',
+            },
+            artist_id: {
+              $first: '$artist_id',
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: 'spotify_artists',
+            localField: 'artist_id',
+            foreignField: 'id',
+            as: 'artist_popularity',
+          },
+        },
+        {
+          $sort: {
+            _id: 1,
+          },
+        },
+        {
+          $set: {
+            artist_popularity: {
+              $arrayElemAt: ['$artist_popularity.artist_popularity', 0],
+            },
+            year: '$_id',
+          },
+        },
+        {
+          $unset: ['_id', 'artist_id'],
+        },
+      ],
+      { allowDiskUse: true },
+    );
     return data;
   }
 }

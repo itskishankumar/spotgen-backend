@@ -7,9 +7,6 @@ import * as CONSTANTS from '../../utils/constants';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://kishankumar:Fucktheworld1@ghost0.ymhob.mongodb.net/spotgen?retryWrites=true&w=majority',
-    ),
     MongooseModule.forFeature([
       { name: CONSTANTS.SPOTIFY_ALBUMS_COLLECTION_NAME, schema: AlbumSchema },
     ]),
