@@ -1,0 +1,1 @@
+{"version":3,"file":"tracks.model.js","sourceRoot":"","sources":["../../../src/tracks/tracks.model.ts"],"names":[],"mappings":";;;AAAA,uCAAkC;AAErB,QAAA,WAAW,GAAG,IAAI,iBAAM,CAAC;IACpC,EAAE,EAAE,MAAM;IACV,QAAQ,EAAE,MAAM;IAChB,IAAI,EAAE,MAAM;IACZ,KAAK,EAAE,MAAM;IACb,IAAI,EAAE,MAAM;CACb,CAAC,CAAC;AACH,mBAAW,CAAC,KAAK,CAAC,EAAE,IAAI,EAAE,MAAM,EAAE,CAAC,CAAC"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"artists.model.js","sourceRoot":"","sources":["../../../src/artists/artists.model.ts"],"names":[],"mappings":";;;AAAA,uCAAkC;AAErB,QAAA,YAAY,GAAG,IAAI,iBAAM,CAAC;IACrC,EAAE,EAAE,MAAM;IACV,SAAS,EAAE,MAAM;IACjB,IAAI,EAAE,MAAM;IACZ,KAAK,EAAE,MAAM;IACb,IAAI,EAAE,MAAM;CACb,CAAC,CAAC;AACH,oBAAY,CAAC,KAAK,CAAC,EAAE,IAAI,EAAE,MAAM,EAAE,CAAC,CAAC"}
