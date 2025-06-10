@@ -9,6 +9,7 @@ export const AlbumSchema = new Schema({
   image: String,
 });
 AlbumSchema.index({ name: 'text' });
+AlbumSchema.index({ id: 1 });
 
 export interface AlbumInterface {
   id: string;

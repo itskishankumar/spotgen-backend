@@ -8,6 +8,8 @@ export const TrackSchema = new Schema({
   type: String,
 });
 TrackSchema.index({ name: 'text' });
+TrackSchema.index({ id: 1 });
+TrackSchema.index({ popularity: -1 });
 
 export interface TrackInterface {
   id: string;

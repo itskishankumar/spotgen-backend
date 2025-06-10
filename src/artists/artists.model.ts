@@ -8,6 +8,7 @@ export const ArtistSchema = new Schema({
   type: String,
 });
 ArtistSchema.index({ name: 'text' });
+ArtistSchema.index({ id: 1 });
 
 export interface ArtistInterface {
   id: string;

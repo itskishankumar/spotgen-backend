@@ -1,0 +1,105 @@
+1 time functions used to setup the collections since some fields were missing, or require parsing/cleanup. The following were run on MONGOSH i.e the Mongo shell in Mongo COMPASS
+
+1. Fetched first genre from genre array
+
+var func_arr = [];
+db.spotify_artists.find().forEach(doc => {
+  const genres = Array.isArray(doc.genres) ? doc.genres.toString() : doc.genres;
+  var genre = genres.split(',').map( e => e.replace(/'|\[|\]|\\/gm,'').toString() );
+  genre = (genre.length !=0) ? genre[0] : ''
+  func_arr.push({
+    "updateOne": {
+      "filter": { "_id": doc._id },
+      "update": { "$set": { "genre": genre } }
+    }
+  });
+
+  if ( func_arr.length >= 1000 ) {
+    db.spotify_artists.bulkWrite(func_arr);
+    func_arr = [];
+  }             
+});
+
+if ( func_arr.length > 0 ) {
+  db.spotify_artists.bulkWrite(func_arr);
+  func_arr = [];
+}
+
+------------------------------------------------------------------
+
+2. Fetch first artist from artists
+
+var func_arr = [];
+db.spotify_tracks.find().forEach(doc => {
+  var artist_id = doc.artists_id.split(',').map( e => e.replace(/'|\[|\]|\\/gm,'').toString() );
+  artist_id = (artist_id.length !=0) ? artist_id[0] : ''
+  func_arr.push({
+    "updateOne": {
+      "filter": { "_id": doc._id },
+      "update": { "$set": { "artist_id": artist_id } }
+    }
+  });
+
+  if ( func_arr.length >= 1000 ) {
+    db.spotify_tracks.bulkWrite(func_arr);
+    func_arr = [];
+  }             
+});
+
+if ( func_arr.length > 0 ) {
+  db.spotify_tracks.bulkWrite(func_arr);
+  func_arr = [];
+}
+
+------------------------------------------------------------------
+
+3. Fetch all artists from artist
+var func_arr = [];
+db.spotify_tracks.find().forEach(doc => {
+  var artists = doc.artists_id.split(',').map( e => e.replace(/'|\[|\]|\\/gm,'').toString().trim() );
+  func_arr.push({
+    "updateOne": {
+      "filter": { "_id": doc._id },
+      "update": { "$set": { "artists_list": artists } }
+    }
+  });
+
+  if ( func_arr.length >= 1000 ) {
+    db.spotify_tracks.bulkWrite(func_arr);
+    func_arr = [];
+  }             
+});
+
+if ( func_arr.length > 0 ) {
+  db.spotify_tracks.bulkWrite(func_arr);
+  func_arr = [];
+}
+
+------------------------------------------------------------------
+
+4. Fetched first image url from image string
+var func_arr = [];
+db.spotify_albums.find().forEach(doc => {
+  const images = Array.isArray(doc.images) ? doc.images.toString() : doc.images;
+  if(images !== '') {
+      var image = images.replace(/'/g,'"');
+      image = JSON.parse(image);
+      image = (image.length !=0) ? image[0].url : ''
+      func_arr.push({
+        "updateOne": {
+          "filter": { "_id": doc._id },
+          "update": { "$set": { "image": image} }
+        }
+      });
+
+      if ( func_arr.length >= 1000 ) {
+        db.spotify_albums.bulkWrite(func_arr);
+        func_arr = [];
+      }
+  }
+});
+
+if ( func_arr.length > 0 ) {
+  db.spotify_albums.bulkWrite(func_arr);
+  func_arr = [];
+}
